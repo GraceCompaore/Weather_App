@@ -1,3 +1,5 @@
+import tabDaysOrdored from "./utilities/timeManagement.js";
+
 
 const keyAPI = '32c031b8cd8765bb691ffbb251522776'; 
 let resultsAPI; 
@@ -6,7 +8,10 @@ const temperature = document.querySelector('.temperature');
 const localisation = document.querySelector('.localisation');
 const hour= document.querySelectorAll('.hour-forecasting-name');
 const tempForHour = document.querySelectorAll('.hour-forecasting-value')
-
+const dayDiv = document.querySelectorAll('.day-forecasting-name');
+const tempDayDiv = document.querySelectorAll('.day-forecasting-temp');
+const imgIcon = document.querySelector('.logo-weather');
+const loadingContainer = document.querySelector('.overlay-icon-loading');
 
 if(navigator.geolocation){
     navigator.geolocation.getCurrentPosition(position =>{
@@ -61,6 +66,26 @@ function callAPI(long, lat){
             tempForHour[j].innerText = `${Math.trunc(resultsAPI.hourly[j*3].temp)}°`
         }
 
+        // les 3 premières lettres du jour
+
+        for (let k=0; k< tabDaysOrdored.length; k++){
+dayDiv[k].innerText = tabDaysOrdored[k].slice(0,3);
+        }
+        // temperature pour chaque jour
+
+    for(let m = 0; m<7 ; m++){
+        tempDayDiv[m].innerText = `${Math.trunc(resultsAPI.daily[m + 1].temp.day)}°`
+    }
+
+    // Icone dynamique 
+    if(currentHour >= 6 &&  currentHour < 21) {
+        imgIcon.src = `ressources/day/${resultsAPI.current.weather[0].icon}.svg`
+    } else  {
+       imgIcon.src = `ressources/night/${resultsAPI.current.weather[0].icon}.svg`
+    }
+    loadingContainer.classList.add('disparition');
+
     })
+    
         
 }
