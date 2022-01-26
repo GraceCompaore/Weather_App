@@ -55,6 +55,11 @@ function callAPI(long, lat){
             }
         }
 
+        // les températures par intervalle de 3h
+
+        for (let j=0; j< tempForHour.length; j++){
+            tempForHour[j].innerText = `${Math.trunc(resultsAPI.hourly[j*3].temp)}°`
+        }
 
     })
         
